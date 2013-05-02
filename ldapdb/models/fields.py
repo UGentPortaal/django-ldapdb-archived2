@@ -174,7 +174,13 @@ class ListField(fields.Field):
 
     def get_prep_lookup(self, lookup_type, value):
         "Perform preliminary non-db specific lookup checks and conversions"
-        if lookup_type == 'contains':
+        if lookup_type in ["endswith", "iendswith"]:
+            return "*%s" % escape_ldap_filter(value)
+        elif lookup_type in ["startswith", "istartswith"]:
+            return "%s*" % escape_ldap_filter(value)
+        elif lookup_type in ["contains", "icontains"]:
+            return "*%s*" % escape_ldap_filter(value)
+        elif lookup_type in ["exact","iexact"]:
             return escape_ldap_filter(value)
         raise TypeError("ListField has invalid lookup: %s" % lookup_type)
 
