@@ -51,6 +51,8 @@ def get_lookup_operator(lookup_type):
         return '>='
     elif lookup_type == 'lte':
         return '<='
+    elif lookup_type == 'range':
+        return '~='
     else:
         return '='
 

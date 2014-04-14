@@ -60,6 +60,8 @@ class CharField(fields.CharField):
             return ["*%s*" % escape_ldap_filter(value)]
         elif lookup_type == 'exact':
             return [escape_ldap_filter(value)]
+        elif lookup_type == "range":
+            return [escape_ldap_filter(value)]
         elif lookup_type == 'in':
             return [escape_ldap_filter(v) for v in value]
 
@@ -79,6 +81,8 @@ class CharField(fields.CharField):
         elif lookup_type in ['contains', 'icontains']:
             return "*%s*" % escape_ldap_filter(value)
         elif lookup_type == 'exact':
+            return escape_ldap_filter(value)
+        elif lookup_type == "range":
             return escape_ldap_filter(value)
         elif lookup_type == 'in':
             return [escape_ldap_filter(v) for v in value]
@@ -181,6 +185,8 @@ class ListField(fields.Field):
         elif lookup_type in ["contains", "icontains"]:
             return "*%s*" % escape_ldap_filter(value)
         elif lookup_type in ["exact","iexact"]:
+            return escape_ldap_filter(value)
+        elif lookup_type == "range":
             return escape_ldap_filter(value)
         raise TypeError("ListField has invalid lookup: %s" % lookup_type)
 
