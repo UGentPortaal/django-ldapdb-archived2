@@ -188,6 +188,8 @@ class ListField(fields.Field):
             return escape_ldap_filter(value)
         elif lookup_type == "range":
             return escape_ldap_filter(value)
+        elif lookup_type == 'in':
+            return [escape_ldap_filter(v) for v in value]
         raise TypeError("ListField has invalid lookup: %s" % lookup_type)
 
     def to_python(self, value):
